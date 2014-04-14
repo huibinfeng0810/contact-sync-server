@@ -15,11 +15,27 @@
 # limitations under the License.
 #
 import webapp2
+import datastore
+
 
 class MainHandler(webapp2.RequestHandler):
+    HANDLE = 'handle'
+    FIRSTNAME = 'firstname'
+    LASTNAME = 'lastname'
+
     def get(self):
-        self.response.write('Hello world!')
+        handle = self.request.get(MainHandler.HANDLE)
+        firstname = self.request.get(MainHandler.FIRSTNAME)
+        lastname = self.request.get(MainHandler.LASTNAME)
+        self.response.write(firstname)
+        self.response.write(lastname)
+
+        contact = datastore.Contact()
+        contact.firstname = firstname
+        contact.lastname = lastname
+        contact.put()
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
+                                  ('/', MainHandler)
+                              ], debug=True)
